@@ -157,7 +157,7 @@ def inpaint_uv(mesh_model: TexturedMeshModel, albedo: torch.Tensor, output_dir: 
 class RenderConfig:
     """ Parameters for the Mesh Renderer """
     grid_size: int = 512
-    radius: float = 1.5
+    radius: float = 0.9 #Original value was 1.5
     look_at_height = 0.5
     base_theta: float = 60
     # Suzanne
@@ -294,6 +294,7 @@ class GenerateTrainConfig:
 
                 "projection_mode": (["Orthographic", "Pinhole"],),
                 "look_at_height": ("FLOAT", {"default": 0.25, "step": 0.01}),
+                "radius": ("FLOAT", {"default": 0.9, "min": 0.1, "max": 10.0, "step": 0.1}),
 
                 "cam_front": ("INT", {"default": 0, "min": 0, "max": 25}),
                 "cam_back": ("INT", {"default": 23, "min": 0, "max": 25}),
@@ -507,7 +508,7 @@ class ProjectToMeshModel:
         return albedo
 
     def project(self, image: torch.Tensor, mesh_model: TexturedMeshModel, cam1=0, cam2=23):
-        train_config: TrainComfig = mesh_model.cfg
+        train_config: TrainConfig = mesh_model.cfg
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         dataset = MultiviewDataset(train_config, device)
         dataloaders = dataset.dataloader()
@@ -545,7 +546,7 @@ class GenerateInpaintMask:
         }
 
     def generate(self, mesh_model: TexturedMeshModel, cam1=0, cam2=23):
-        train_config: TrainComfig = mesh_model.cfg
+        train_config: TrainConfig = mesh_model.cfg
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         dataset = MultiviewDataset(train_config, device)
         dataloaders = dataset.dataloader()
@@ -577,7 +578,7 @@ class GeneratePreviewVideo:
         }
 
     def generate(self, mesh_model: TexturedMeshModel, file_name):
-        train_config: TrainComfig = mesh_model.cfg
+        train_config: TrainConfig = mesh_model.cfg
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         output_dir = get_output_directory(train_config.guide.shape_path)
         dataset = MultiviewDataset(train_config, device)
@@ -607,7 +608,7 @@ class GenerateInpaintUVMapMask:
         }
 
     def generate(self, mesh_model: TexturedMeshModel, albedo: torch.Tensor):
-        train_config: TrainComfig = mesh_model.cfg
+        train_config: TrainConfig = mesh_model.cfg
         output_dir = get_output_directory(train_config.guide.shape_path)
         mask, uv = inpaint_uv(mesh_model=mesh_model, albedo=albedo, output_dir=output_dir)
         mask = mask[:, :, :, 0]
@@ -628,7 +629,7 @@ class SaveUVMapImage:
         }
 
     def save(self, mesh_model: TexturedMeshModel, uv_map: torch.Tensor):
-        train_config: TrainComfig = mesh_model.cfg
+        train_config: TrainConfig = mesh_model.cfg
         albedo_path = os.path.join(f"{get_output_directory(train_config.guide.shape_path)}", "albedo.png")
         before_albedo_path = os.path.join(f"{get_output_directory(train_config.guide.shape_path)}", "before_albedo.png")
 

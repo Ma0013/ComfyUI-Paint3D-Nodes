@@ -8,7 +8,7 @@ from typing import Optional, Tuple, List
 class RenderConfig:
     """ Parameters for the Mesh Renderer """
     grid_size: int = 2048
-    radius: float = 1.5
+    radius: float = 0.9 #original value was 1.5
     look_at_height = 0.25
     base_theta: float = 60
     # Suzanne
