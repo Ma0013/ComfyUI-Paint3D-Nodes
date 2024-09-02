@@ -308,7 +308,7 @@ class GenerateTrainConfig:
 
     def generate(self, mesh_file_path, ckpt, clip, vae, sampler, scheduler, positive, negative, seed, txt2img_steps, txt2img_cfg,
                  txt2img_denoise, inpaint_steps, inpaint_cfg, inpaint_denoise, depth_strength, depth_controlnet,
-                 inpaint_strength, inpaint_controlnet, projection_mode, look_at_height, cam_front, cam_back, cam_left, cam_right,
+                 inpaint_strength, inpaint_controlnet, projection_mode, look_at_height, radius, cam_front, cam_back, cam_left, cam_right,
                  cam_top, cam_bottom, grid_size):
         config = TrainConfig()
         config.guide.shape_path = mesh_file_path
@@ -337,7 +337,7 @@ class GenerateTrainConfig:
         else:
             config.render.fov_para = np.pi / 3 * 0.9
         config.render.look_at_height = look_at_height
-
+        config.render.radius = radius # added this and the radius argument in generate function
         config.cam_front = cam_front
         config.cam_back = cam_back
         config.cam_left = cam_left
