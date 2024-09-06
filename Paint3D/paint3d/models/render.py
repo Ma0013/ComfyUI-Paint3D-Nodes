@@ -65,7 +65,7 @@ class Renderer:
         return camera_transform
 
     def normalize_depth(self, depth_map):
-        assert depth_map.max() <= 0.0, 'depth map should be negative'  # 相机视野中不存在物体, 就会报错
+        assert depth_map.max() <= 0.0, 'depth map should be negative'  # 相机视野中不存在物体, 就会报错 here is no object in the camera's field of view, and an error is reported.
         object_mask = depth_map != 0
         min_val = 0.5
         depth_map[object_mask] = ((1 - min_val) * (depth_map[object_mask] - depth_map[object_mask].min()) / (

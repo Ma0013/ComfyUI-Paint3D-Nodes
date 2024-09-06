@@ -161,7 +161,7 @@ class RenderConfig:
     look_at_height = 0.5
     base_theta: float = 60
     # Suzanne
-    fov_para: float = 0.8  # 0.61 or 0.8 for Orthographic ; np.pi / 3 for Pinhole
+    fov_para: float = 0.61 #changed 0.8 to 0.61  # 0.61 or 0.8 for Orthographic ; np.pi / 3 for Pinhole
     remove_mesh_part_names: List[str] = field(default_factory=["MI_CH_Top"].copy)
     remove_unsupported_buffers: List[str] = field(default_factory=["filamat"].copy)
     n_views: int = 24  # 16
@@ -294,7 +294,10 @@ class GenerateTrainConfig:
 
                 "projection_mode": (["Orthographic", "Pinhole"],),
                 "look_at_height": ("FLOAT", {"default": 0.25, "step": 0.01}),
+                #Exposing radius
                 "radius": ("FLOAT", {"default": 0.9, "min": 0.1, "max": 10.0, "step": 0.1}),
+                # Exposing fov_para
+                "fov_para": ("FLOAT", {"default": 0.61, "min": 0.1, "max": 3.0, "step": 0.1}),
 
                 "cam_front": ("INT", {"default": 0, "min": 0, "max": 25}),
                 "cam_back": ("INT", {"default": 23, "min": 0, "max": 25}),
@@ -308,7 +311,7 @@ class GenerateTrainConfig:
 
     def generate(self, mesh_file_path, ckpt, clip, vae, sampler, scheduler, positive, negative, seed, txt2img_steps, txt2img_cfg,
                  txt2img_denoise, inpaint_steps, inpaint_cfg, inpaint_denoise, depth_strength, depth_controlnet,
-                 inpaint_strength, inpaint_controlnet, projection_mode, look_at_height, radius, cam_front, cam_back, cam_left, cam_right,
+                 inpaint_strength, inpaint_controlnet, projection_mode, fov_para, look_at_height, radius, cam_front, cam_back, cam_left, cam_right,
                  cam_top, cam_bottom, grid_size):
         config = TrainConfig()
         config.guide.shape_path = mesh_file_path
