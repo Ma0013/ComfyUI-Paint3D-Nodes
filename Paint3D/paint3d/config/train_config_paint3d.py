@@ -12,7 +12,7 @@ class RenderConfig:
     look_at_height = 0.25
     base_theta: float = 60
     # Suzanne
-    fov_para: float = np.pi / 3 * 0.9  # 0.61 or 0.8 for Orthographic ; np.pi / 3 for Pinhole
+    fov_para: float = 0.61  # 0.61 or 0.8 for Orthographic ; np.pi / 3 for Pinhole
     remove_mesh_part_names: List[str] = field(default_factory=["MI_CH_Top"].copy)
     remove_unsupported_buffers: List[str] = field(default_factory=["filamat"].copy)
     n_views: int = 24  # 16
@@ -23,7 +23,7 @@ class RenderConfig:
     # Whether to alternate between the rotating views from the different sides
     alternate_views: bool = True
     calcu_uncolored_mode: str = "WarpGrid"  # FACE_ID, DIFF, WarpGrid
-    projection_mode: str = "Pinhole"  # Pinhole, Orthographic
+    projection_mode: str = "Orthographic"  # Pinhole, Orthographic
     texture_interpolation_mode: str = 'bilinear'
     texture_default_color: List[float] = field(default_factory=[0.8, 0.1, 0.8].copy)
     texturify_blend_alpha: float = 1.0
@@ -42,8 +42,8 @@ class GuideConfig:
     texture_resolution: List[int] = field(default_factory=[1024, 1024].copy)  # h w
     # Append direction to text prompts
     append_direction: bool = True
-    # mesh在归一化后缩放的比例
-    shape_scale: float = 0.6
+    # mesh在归一化后缩放的比例 Scaling of mesh after normalisation
+    shape_scale: float = 0.8 #Changed from 0.6 to 0.8
     # Threshold for defining refine regions
     z_update_thr: float = 0.2
     # Some more strict masking for projecting back

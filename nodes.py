@@ -336,7 +336,7 @@ class GenerateTrainConfig:
 
         config.render.projection_mode = projection_mode
         if projection_mode == "Orthographic":
-            config.render.fov_para = 0.8
+            config.render.fov_para = 0.61
         else:
             config.render.fov_para = np.pi / 3 * 0.9
         config.render.look_at_height = look_at_height
